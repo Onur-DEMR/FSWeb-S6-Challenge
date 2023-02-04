@@ -1,18 +1,27 @@
-import React from 'react';
+import axios from "axios";
+import React from "react";
+import { useEffect } from "react";
+import { useState } from "react";
+import Karakter from "./components/Karakter";
+import { data } from "./mocks/handlers";
 
 const App = () => {
-  // Try to think through what state you'll need for this app before starting. Then build out
-  // the state properties here.
-
-  // Fetch characters from the API in an effect hook. Remember, anytime you have a 
-  // side effect in a component, you want to think about which state and/or props it should
-  // sync up with, if any.
+  let [veri, setVeri] = useState(null);
+  useEffect(() => {
+    const render = async () => {
+      const total = await axios.get("https://swapi.dev/api/people/");
+      return total;
+    };
+    render()
+      .then((res) => setVeri(res.data))
+      .catch((err) => err);
+  }, []);
 
   return (
-    <div className="App">
-      <h1 className="Header">Karakterler</h1>
-    </div>
+    <>
+      <Karakter data={veri} />
+    </>
   );
-}
+};
 
 export default App;
